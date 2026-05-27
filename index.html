@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trova la tua estate · San Bernardino Summer Village 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #1A1A18; color: white; padding: 2.5rem; }
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8D4A0;
+  --dark: #1A1A18;
+  --border-dark: rgba(255,255,255,0.1);
+}
+
+.quiz-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.quiz-label::before { content: ''; width: 2rem; height: 1px; background: var(--gold); }
+.quiz-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 3vw, 34px); color: white; line-height: 1.1; margin-bottom: 0.25rem; }
+.quiz-heading em { font-style: italic; color: var(--gold); }
+.quiz-sub { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.5; }
+
+.quiz-progress-bar { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+.qpb { flex: 1; height: 2px; background: rgba(255,255,255,0.1); transition: background 0.3s; }
+.qpb.active { background: var(--gold); }
+.qpb.done { background: rgba(201,168,76,0.4); }
+
+.quiz-step { display: none; }
+.quiz-step.active { display: block; }
+.quiz-step-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.75rem; }
+.quiz-question-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(17px, 2.5vw, 24px); color: white; margin-bottom: 1.25rem; line-height: 1.3; }
+
+.quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); }
+.quiz-options-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); }
+
+.quiz-option { padding: 1rem 1.2rem; background: rgba(255,255,255,0.03); cursor: pointer; transition: all 0.2s; border: none; text-align: left; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 12px; width: 100%; }
+.quiz-option:hover { background: rgba(201,168,76,0.08); }
+.quiz-option.selected { background: rgba(201,168,76,0.12); outline: 1px solid var(--gold); }
+.quiz-option-emoji { font-size: 18px; flex-shrink: 0; }
+.quiz-option-text { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.4; text-align: left; }
+.quiz-option.selected .quiz-option-text { color: white; }
+
+.quiz-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
+.quiz-btn-back { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); padding: 8px 18px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+.quiz-btn-back:hover { border-color: white; color: white; }
+.quiz-btn-next { background: var(--gold); border: none; color: var(--dark); padding: 9px 22px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+.quiz-btn-next:hover { background: white; }
+.quiz-btn-next:disabled { opacity: 0.25; cursor: not-allowed; }
+
+/* RESULT */
+.quiz-result { display: none; }
+.quiz-result.active { display: block; }
+.result-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.result-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 4vw, 40px); color: white; margin-bottom: 0.4rem; line-height: 1.1; }
+.result-date { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1rem; }
+.result-keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+.result-kw { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
+.result-text { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.65); margin-bottom: 1.5rem; font-weight: 300; }
+.result-ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.result-cta-p { padding: 11px 22px; background: var(--gold); color: var(--dark); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; font-family: 'Inter', sans-serif; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.result-cta-p:hover { background: white; }
+.result-cta-s { padding: 11px 22px; background: none; color: white; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; font-family: 'Inter', sans-serif; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.result-cta-s:hover { border-color: white; }
+.result-retry { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; text-decoration: underline; }
+.result-retry:hover { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 600px) {
+  body { padding: 1.5rem; }
+  .quiz-options-grid, .quiz-options-2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-label">Trova il tuo mood · 3 domande</div>
+<div class="quiz-heading">Che tipo di giornata<br><em>stai cercando?</em></div>
+<p class="quiz-sub">Tre domande. Nessuna risposta giusta. Solo la tua giornata ideale a San Bernardino.</p>
+
+<div class="quiz-progress-bar">
+  <div class="qpb active" id="qpb-1"></div>
+  <div class="qpb" id="qpb-2"></div>
+  <div class="qpb" id="qpb-3"></div>
+</div>
+
+<div class="quiz-step active" id="step-1">
+  <div class="quiz-step-label">Domanda 1 di 3</div>
+  <div class="quiz-question-text">Come ti immagini la mattina ideale in montagna?</div>
+  <div class="quiz-options-grid">
+    <button class="quiz-option" onclick="sel(this,1,'relax')"><span class="quiz-option-emoji">🧘</span><span class="quiz-option-text">Yoga sul prato e una tisana calda in silenzio</span></button>
+    <button class="quiz-option" onclick="sel(this,1,'active')"><span class="quiz-option-emoji">🚵</span><span class="quiz-option-text">In bici tra i larici prima che si svegli il resto del mondo</span></button>
+    <button class="quiz-option" onclick="sel(this,1,'coppia')"><span class="quiz-option-emoji">☕</span><span class="quiz-option-text">Colazione lunghissima con vista, senza guardare l'orologio</span></button>
+    <button class="quiz-option" onclick="sel(this,1,'creativita')"><span class="quiz-option-emoji">🎨</span><span class="quiz-option-text">Un workshop creativo con le mani in pasta</span></button>
+  </div>
+</div>
+
+<div class="quiz-step" id="step-2">
+  <div class="quiz-step-label">Domanda 2 di 3</div>
+  <div class="quiz-question-text">Chi porta con sé in questa giornata?</div>
+  <div class="quiz-options-grid">
+    <button class="quiz-option" onclick="sel(this,2,'famiglia')"><span class="quiz-option-emoji">👨‍👩‍👧</span><span class="quiz-option-text">La mia famiglia — bambini inclusi</span></button>
+    <button class="quiz-option" onclick="sel(this,2,'coppia')"><span class="quiz-option-emoji">🥂</span><span class="quiz-option-text">Il mio partner — un weekend solo per noi</span></button>
+    <button class="quiz-option" onclick="sel(this,2,'amici')"><span class="quiz-option-emoji">🏔️</span><span class="quiz-option-text">I miei amici — vogliamo vivere qualcosa di intenso</span></button>
+    <button class="quiz-option" onclick="sel(this,2,'solo')"><span class="quiz-option-emoji">🌿</span><span class="quiz-option-text">Vengo da solo — ho bisogno di spazio e silenzio</span></button>
+  </div>
+</div>
+
+<div class="quiz-step" id="step-3">
+  <div class="quiz-step-label">Domanda 3 di 3</div>
+  <div class="quiz-question-text">Quanto tempo hai a disposizione?</div>
+  <div class="quiz-options-2">
+    <button class="quiz-option" onclick="sel(this,3,'giorno')"><span class="quiz-option-emoji">☀️</span><span class="quiz-option-text">Una giornata intensa — voglio sfruttarla al massimo</span></button>
+    <button class="quiz-option" onclick="sel(this,3,'weekend')"><span class="quiz-option-emoji">🌙</span><span class="quiz-option-text">Un fine settimana — vengo a dormire e staccare davvero</span></button>
+  </div>
+</div>
+
+<div class="quiz-result" id="quiz-result">
+  <div class="result-eyebrow">Perfetto per chi...</div>
+  <div class="result-title" id="r-title"></div>
+  <div class="result-date" id="r-date"></div>
+  <div class="result-keywords" id="r-kws"></div>
+  <div class="result-text" id="r-text"></div>
+  <div class="result-ctas" id="r-ctas"></div>
+  <button class="result-retry" onclick="resetQuiz()">← Rifai il test</button>
+</div>
+
+<div class="quiz-nav" id="quiz-nav">
+  <button class="quiz-btn-back" id="btn-back" onclick="prevStep()" style="visibility:hidden">← Indietro</button>
+  <button class="quiz-btn-next" id="btn-next" onclick="nextStep()" disabled>Avanti →</button>
+</div>
+
+<script>
+const ans = {1:null,2:null,3:null};
+let step = 1;
+
+const results = {
+  relax_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Famiglia','Arte'],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  relax_coppia_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:['Wellness','SPA','Musica'],text:'Esperienza Innerwalk al passo, spa al Brocco e concerto Greenhope la sera. Raggiungibile in meno di due ore da Milano e Lugano.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
+  relax_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Wellness','SPA','Natura'],text:'Due giorni tra esperienza Innerwalk, concerto Greenhope il sabato e Sono Natura nei boschi la domenica.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
+  relax_solo_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:['Silenzio','Wellness','Natura'],text:'Esperienza Innerwalk al passo, spa al Brocco nel pomeriggio. La montagna come spazio di ritiro.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  relax_amici_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Musica','Natura','Wellness'],text:'Greenhope Hike Parade, Sono Natura nei boschi, concerto la sera. Due giorni per muoversi e poi fermarsi.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
+  active_famiglia_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:['Sport','Creatività','Food'],text:'Atelier per i bambini, Vertical SanBe da vivere da spettatori e Alpine Gourmet. Due giorni in cui non manca niente.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
+  active_famiglia_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:['Sport','Famiglia','Food'],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  active_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Natura','Musica','Movimento'],text:'Greenhope Hike Parade, Sono Natura nei boschi e concerto la sera. Un weekend vero in quota.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
+  active_amici_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:['Sport','Outdoor','Food'],text:'Vertical SanBe, Alpine Gourmet e le escursioni sul territorio. Fatica e piacere, in quota.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
+  active_solo_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:['Sport','Outdoor','Food'],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  creativita_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Famiglia','Arte'],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  creativita_coppia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Arte','Natura'],text:'Passeggiata botanica tra i boschi e laboratorio di cianotipia. Tornate a casa con qualcosa di unico.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  creativita_solo_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:['Creatività','Stelle','Musica'],text:'Workshop Kokedama, Notte delle Stelle e concerto al tramonto a Capanna Confin.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
+  coppia_famiglia_giorno:{title:'Festa Nazionale in quota',date:'1 agosto',kws:['Famiglia','Musica live','Svizzera'],text:'Il 1° agosto in montagna, come si deve. Un villaggio in festa e Davide Van De Sfroos sul palco della Raiffeisen Alpine Lounge.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
+  coppia_coppia_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:['Stelle','Musica','Relax'],text:'Notte delle Stelle, concerto al tramonto, SPA il mattino del 15. Tre giorni che diventano un ricordo.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
+};
+
+function getKey(){
+  const k=`${ans[1]}_${ans[2]}_${ans[3]}`;
+  if(results[k]) return k;
+  const fb=Object.keys(results).filter(r=>r.startsWith(ans[1])&&r.endsWith(ans[3]));
+  return fb.length?fb[0]:Object.keys(results).find(r=>r.startsWith(ans[1]))||'relax_coppia_weekend';
+}
+
+function sel(btn,s,v){
+  btn.closest('.quiz-step').querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+  btn.classList.add('selected');
+  ans[s]=v;
+  document.getElementById('btn-next').disabled=false;
+}
+
+function nextStep(){
+  if(step<3){
+    document.getElementById('step-'+step).classList.remove('active');
+    step++;
+    document.getElementById('step-'+step).classList.add('active');
+    document.getElementById('btn-next').disabled=!ans[step];
+    document.getElementById('btn-back').style.visibility='visible';
+    updateBars();
+    if(step===3) document.getElementById('btn-next').textContent='Scopri la tua giornata →';
+  } else { showResult(); }
+}
+
+function prevStep(){
+  if(step>1){
+    document.getElementById('step-'+step).classList.remove('active');
+    step--;
+    document.getElementById('step-'+step).classList.add('active');
+    document.getElementById('btn-next').disabled=false;
+    document.getElementById('btn-next').textContent=step===3?'Scopri la tua giornata →':'Avanti →';
+    if(step===1) document.getElementById('btn-back').style.visibility='hidden';
+    updateBars();
+  }
+}
+
+function updateBars(){
+  for(let i=1;i<=3;i++){
+    const b=document.getElementById('qpb-'+i);
+    b.className='qpb'+(i<step?' done':i===step?' active':'');
+  }
+}
+
+function showResult(){
+  const r=results[getKey()];
+  document.getElementById('step-3').classList.remove('active');
+  document.getElementById('quiz-nav').style.display='none';
+  document.getElementById('quiz-result').classList.add('active');
+  document.getElementById('r-title').textContent=r.title;
+  document.getElementById('r-date').textContent=r.date;
+  document.getElementById('r-text').textContent=r.text;
+  document.getElementById('r-kws').innerHTML=r.kws.map(k=>`<span class="result-kw">${k}</span>`).join('');
+  let h=`<a class="result-cta-p" href="${r.c1.h}">${r.c1.l}</a>`;
+  if(r.c2) h+=`<a class="result-cta-s" href="${r.c2.h}">${r.c2.l}</a>`;
+  document.getElementById('r-ctas').innerHTML=h;
+  for(let i=1;i<=3;i++) document.getElementById('qpb-'+i).className='qpb done';
+}
+
+function resetQuiz(){
+  ans[1]=ans[2]=ans[3]=null; step=1;
+  document.getElementById('quiz-result').classList.remove('active');
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('quiz-nav').style.display='flex';
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-next').textContent='Avanti →';
+  document.getElementById('btn-back').style.visibility='hidden';
+  document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+  for(let i=1;i<=3;i++) document.getElementById('qpb-'+i).className='qpb'+(i===1?' active':'');
+}
+</script>
+</body>
+</html>
