@@ -4,78 +4,313 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trova la tua estate · San Bernardino Summer Village 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: #1A1A18; color: white; padding: 2.5rem; }
 
 :root {
-  --gold: #C9A84C;
-  --gold-light: #E8D4A0;
-  --dark: #1A1A18;
-  --border-dark: rgba(255,255,255,0.1);
+  --orange: #ED7354;
+  --yellow: #FFDE66;
+  --green: #0B7E66;
+  --teal: #91CFD1;
+  --lightblue: #C0DBF3;
+  --blue: #5B6BAF;
+  --violet: #B16AA8;
+  --black: #111111;
+  --white: #ffffff;
+  --light: #F7F7F5;
+  --border: #E5E5E5;
+  --gray: #6B6B6B;
 }
 
-.quiz-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
-.quiz-label::before { content: ''; width: 2rem; height: 1px; background: var(--gold); }
-.quiz-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 3vw, 34px); color: white; line-height: 1.1; margin-bottom: 0.25rem; }
-.quiz-heading em { font-style: italic; color: var(--gold); }
-.quiz-sub { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.5; }
+body {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  padding: 2.5rem;
+  max-width: 760px;
+}
 
-.quiz-progress-bar { display: flex; gap: 6px; margin-bottom: 1.5rem; }
-.qpb { flex: 1; height: 2px; background: rgba(255,255,255,0.1); transition: background 0.3s; }
-.qpb.active { background: var(--gold); }
-.qpb.done { background: rgba(201,168,76,0.4); }
+/* HEADER */
+.quiz-pretitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
 
+.quiz-heading {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.quiz-sub {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--black);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  max-width: 500px;
+}
+
+/* PROGRESS */
+.quiz-progress-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2rem;
+}
+.qpb {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+.qpb.active { background: var(--orange); }
+.qpb.done { background: var(--yellow); }
+
+/* STEPS */
 .quiz-step { display: none; }
 .quiz-step.active { display: block; }
-.quiz-step-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.75rem; }
-.quiz-question-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(17px, 2.5vw, 24px); color: white; margin-bottom: 1.25rem; line-height: 1.3; }
 
-.quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); }
-.quiz-options-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); }
+.quiz-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
 
-.quiz-option { padding: 1rem 1.2rem; background: rgba(255,255,255,0.03); cursor: pointer; transition: all 0.2s; border: none; text-align: left; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 12px; width: 100%; }
-.quiz-option:hover { background: rgba(201,168,76,0.08); }
-.quiz-option.selected { background: rgba(201,168,76,0.12); outline: 1px solid var(--gold); }
-.quiz-option-emoji { font-size: 18px; flex-shrink: 0; }
-.quiz-option-text { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.4; text-align: left; }
-.quiz-option.selected .quiz-option-text { color: white; }
+.quiz-question-text {
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 800;
+  color: var(--black);
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
 
-.quiz-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
-.quiz-btn-back { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); padding: 8px 18px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-.quiz-btn-back:hover { border-color: white; color: white; }
-.quiz-btn-next { background: var(--gold); border: none; color: var(--dark); padding: 9px 22px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-.quiz-btn-next:hover { background: white; }
-.quiz-btn-next:disabled { opacity: 0.25; cursor: not-allowed; }
+/* OPTIONS GRID */
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.quiz-options-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quiz-option {
+  padding: 1.1rem 1.25rem;
+  background: var(--light);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.quiz-option:hover {
+  border-color: var(--orange);
+  background: #FEF3F0;
+}
+.quiz-option.selected {
+  border-color: var(--orange);
+  background: #FEF3F0;
+}
+.quiz-option-emoji { font-size: 22px; }
+.quiz-option-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.4;
+}
+.quiz-option.selected .quiz-option-text { font-weight: 700; }
+
+/* NAV */
+.quiz-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.quiz-btn-back {
+  background: none;
+  border: 2px solid var(--border);
+  color: var(--gray);
+  padding: 10px 20px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 100px;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.quiz-btn-back:hover { border-color: var(--black); color: var(--black); }
+
+.quiz-btn-next {
+  background: var(--yellow);
+  border: none;
+  color: var(--black);
+  padding: 12px 28px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 100px;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.quiz-btn-next:hover { background: var(--orange); color: white; }
+.quiz-btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* RESULT */
 .quiz-result { display: none; }
 .quiz-result.active { display: block; }
-.result-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
-.result-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 4vw, 40px); color: white; margin-bottom: 0.4rem; line-height: 1.1; }
-.result-date { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1rem; }
-.result-keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
-.result-kw { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); }
-.result-text { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.65); margin-bottom: 1.5rem; font-weight: 300; }
-.result-ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; }
-.result-cta-p { padding: 11px 22px; background: var(--gold); color: var(--dark); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; font-family: 'Inter', sans-serif; text-decoration: none; display: inline-block; transition: background 0.2s; }
-.result-cta-p:hover { background: white; }
-.result-cta-s { padding: 11px 22px; background: none; color: white; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; font-family: 'Inter', sans-serif; text-decoration: none; display: inline-block; transition: all 0.2s; }
-.result-cta-s:hover { border-color: white; }
-.result-retry { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; text-decoration: underline; }
-.result-retry:hover { color: rgba(255,255,255,0.6); }
 
-@media (max-width: 600px) {
+.result-pretitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.75rem;
+}
+
+.result-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.result-date {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+
+.result-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.result-kw {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 2px solid var(--border);
+  color: var(--black);
+}
+
+.result-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--black);
+  margin-bottom: 1.75rem;
+  max-width: 520px;
+}
+
+.result-ctas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.result-cta-p {
+  padding: 13px 26px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.15s;
+}
+.result-cta-p:hover { background: var(--black); }
+
+.result-cta-s {
+  padding: 13px 26px;
+  background: none;
+  color: var(--black);
+  border: 2px solid var(--black);
+  border-radius: 100px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+.result-cta-s:hover { background: var(--black); color: white; }
+
+.result-retry {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  text-decoration: underline;
+  letter-spacing: 0.02em;
+}
+.result-retry:hover { color: var(--black); }
+
+/* CATEGORY COLORS for keywords */
+.kw-green { border-color: var(--green); color: var(--green); }
+.kw-orange { border-color: var(--orange); color: var(--orange); }
+.kw-violet { border-color: var(--violet); color: var(--violet); }
+.kw-teal { border-color: var(--teal); color: #0B7E66; }
+.kw-blue { border-color: var(--blue); color: var(--blue); }
+
+@media (max-width: 560px) {
   body { padding: 1.5rem; }
   .quiz-options-grid, .quiz-options-2 { grid-template-columns: 1fr; }
+  .result-ctas { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<div class="quiz-label">Trova il tuo mood · 3 domande</div>
-<div class="quiz-heading">Che tipo di giornata<br><em>stai cercando?</em></div>
+<div class="quiz-pretitle">Test · 3 domande</div>
+<div class="quiz-heading">Trova la tua<br>estate a SanBe</div>
 <p class="quiz-sub">Tre domande. Nessuna risposta giusta. Solo la tua giornata ideale a San Bernardino.</p>
 
 <div class="quiz-progress-bar">
@@ -84,39 +319,73 @@ body { font-family: 'Inter', sans-serif; background: #1A1A18; color: white; padd
   <div class="qpb" id="qpb-3"></div>
 </div>
 
+<!-- STEP 1 -->
 <div class="quiz-step active" id="step-1">
   <div class="quiz-step-label">Domanda 1 di 3</div>
   <div class="quiz-question-text">Come ti immagini la mattina ideale in montagna?</div>
   <div class="quiz-options-grid">
-    <button class="quiz-option" onclick="sel(this,1,'relax')"><span class="quiz-option-emoji">🧘</span><span class="quiz-option-text">Yoga sul prato e una tisana calda in silenzio</span></button>
-    <button class="quiz-option" onclick="sel(this,1,'active')"><span class="quiz-option-emoji">🚵</span><span class="quiz-option-text">In bici tra i larici prima che si svegli il resto del mondo</span></button>
-    <button class="quiz-option" onclick="sel(this,1,'coppia')"><span class="quiz-option-emoji">☕</span><span class="quiz-option-text">Colazione lunghissima con vista, senza guardare l'orologio</span></button>
-    <button class="quiz-option" onclick="sel(this,1,'creativita')"><span class="quiz-option-emoji">🎨</span><span class="quiz-option-text">Un workshop creativo con le mani in pasta</span></button>
+    <button class="quiz-option" onclick="sel(this,1,'relax')">
+      <span class="quiz-option-emoji">🧘</span>
+      <span class="quiz-option-text">Yoga sul prato e una tisana calda in silenzio</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,1,'active')">
+      <span class="quiz-option-emoji">🚵</span>
+      <span class="quiz-option-text">In bici tra i larici prima che si svegli il resto del mondo</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,1,'coppia')">
+      <span class="quiz-option-emoji">☕</span>
+      <span class="quiz-option-text">Colazione lunghissima con vista, senza guardare l'orologio</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,1,'creativita')">
+      <span class="quiz-option-emoji">🎨</span>
+      <span class="quiz-option-text">Un workshop creativo con le mani in pasta</span>
+    </button>
   </div>
 </div>
 
+<!-- STEP 2 -->
 <div class="quiz-step" id="step-2">
   <div class="quiz-step-label">Domanda 2 di 3</div>
   <div class="quiz-question-text">Chi porta con sé in questa giornata?</div>
   <div class="quiz-options-grid">
-    <button class="quiz-option" onclick="sel(this,2,'famiglia')"><span class="quiz-option-emoji">👨‍👩‍👧</span><span class="quiz-option-text">La mia famiglia — bambini inclusi</span></button>
-    <button class="quiz-option" onclick="sel(this,2,'coppia')"><span class="quiz-option-emoji">🥂</span><span class="quiz-option-text">Il mio partner — un weekend solo per noi</span></button>
-    <button class="quiz-option" onclick="sel(this,2,'amici')"><span class="quiz-option-emoji">🏔️</span><span class="quiz-option-text">I miei amici — vogliamo vivere qualcosa di intenso</span></button>
-    <button class="quiz-option" onclick="sel(this,2,'solo')"><span class="quiz-option-emoji">🌿</span><span class="quiz-option-text">Vengo da solo — ho bisogno di spazio e silenzio</span></button>
+    <button class="quiz-option" onclick="sel(this,2,'famiglia')">
+      <span class="quiz-option-emoji">👨‍👩‍👧</span>
+      <span class="quiz-option-text">La mia famiglia — bambini inclusi</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,2,'coppia')">
+      <span class="quiz-option-emoji">🥂</span>
+      <span class="quiz-option-text">Il mio partner — un weekend solo per noi</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,2,'amici')">
+      <span class="quiz-option-emoji">🏔️</span>
+      <span class="quiz-option-text">I miei amici — vogliamo vivere qualcosa di intenso</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,2,'solo')">
+      <span class="quiz-option-emoji">🌿</span>
+      <span class="quiz-option-text">Vengo da solo — ho bisogno di spazio e silenzio</span>
+    </button>
   </div>
 </div>
 
+<!-- STEP 3 -->
 <div class="quiz-step" id="step-3">
   <div class="quiz-step-label">Domanda 3 di 3</div>
   <div class="quiz-question-text">Quanto tempo hai a disposizione?</div>
   <div class="quiz-options-2">
-    <button class="quiz-option" onclick="sel(this,3,'giorno')"><span class="quiz-option-emoji">☀️</span><span class="quiz-option-text">Una giornata intensa — voglio sfruttarla al massimo</span></button>
-    <button class="quiz-option" onclick="sel(this,3,'weekend')"><span class="quiz-option-emoji">🌙</span><span class="quiz-option-text">Un fine settimana — vengo a dormire e staccare davvero</span></button>
+    <button class="quiz-option" onclick="sel(this,3,'giorno')">
+      <span class="quiz-option-emoji">☀️</span>
+      <span class="quiz-option-text">Una giornata intensa — voglio sfruttarla al massimo</span>
+    </button>
+    <button class="quiz-option" onclick="sel(this,3,'weekend')">
+      <span class="quiz-option-emoji">🌙</span>
+      <span class="quiz-option-text">Un fine settimana — vengo a dormire e staccare davvero</span>
+    </button>
   </div>
 </div>
 
+<!-- RESULT -->
 <div class="quiz-result" id="quiz-result">
-  <div class="result-eyebrow">Perfetto per chi...</div>
+  <div class="result-pretitle">Perfetto per chi...</div>
   <div class="result-title" id="r-title"></div>
   <div class="result-date" id="r-date"></div>
   <div class="result-keywords" id="r-kws"></div>
@@ -135,21 +404,22 @@ const ans = {1:null,2:null,3:null};
 let step = 1;
 
 const results = {
-  relax_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Famiglia','Arte'],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  relax_coppia_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:['Wellness','SPA','Musica'],text:'Esperienza Innerwalk al passo, spa al Brocco e concerto Greenhope la sera. Raggiungibile in meno di due ore da Milano e Lugano.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
-  relax_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Wellness','SPA','Natura'],text:'Due giorni tra esperienza Innerwalk, concerto Greenhope il sabato e Sono Natura nei boschi la domenica.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
-  relax_solo_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:['Silenzio','Wellness','Natura'],text:'Esperienza Innerwalk al passo, spa al Brocco nel pomeriggio. La montagna come spazio di ritiro.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  relax_amici_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Musica','Natura','Wellness'],text:'Greenhope Hike Parade, Sono Natura nei boschi, concerto la sera. Due giorni per muoversi e poi fermarsi.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
-  active_famiglia_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:['Sport','Creatività','Food'],text:'Atelier per i bambini, Vertical SanBe da vivere da spettatori e Alpine Gourmet. Due giorni in cui non manca niente.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
-  active_famiglia_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:['Sport','Famiglia','Food'],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  active_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:['Natura','Musica','Movimento'],text:'Greenhope Hike Parade, Sono Natura nei boschi e concerto la sera. Un weekend vero in quota.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
-  active_amici_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:['Sport','Outdoor','Food'],text:'Vertical SanBe, Alpine Gourmet e le escursioni sul territorio. Fatica e piacere, in quota.',c1:{l:'Scopri il weekend →',h:'#'},c2:null},
-  active_solo_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:['Sport','Outdoor','Food'],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  creativita_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Famiglia','Arte'],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  creativita_coppia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:['Creatività','Arte','Natura'],text:'Passeggiata botanica tra i boschi e laboratorio di cianotipia. Tornate a casa con qualcosa di unico.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  creativita_solo_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:['Creatività','Stelle','Musica'],text:'Workshop Kokedama, Notte delle Stelle e concerto al tramonto a Capanna Confin.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
-  coppia_famiglia_giorno:{title:'Festa Nazionale in quota',date:'1 agosto',kws:['Famiglia','Musica live','Svizzera'],text:'Il 1° agosto in montagna, come si deve. Un villaggio in festa e Davide Van De Sfroos sul palco della Raiffeisen Alpine Lounge.',c1:{l:'Scopri la giornata →',h:'#'},c2:null},
-  coppia_coppia_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:['Stelle','Musica','Relax'],text:'Notte delle Stelle, concerto al tramonto, SPA il mattino del 15. Tre giorni che diventano un ricordo.',c1:{l:'Scopri il weekend →',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
+  relax_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:[['Creatività','kw-violet'],['Famiglia','kw-green'],['Arte','kw-teal']],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  relax_coppia_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:[['Wellness','kw-green'],['SPA','kw-teal'],['Musica','kw-violet']],text:'Esperienza Innerwalk al passo, spa al Brocco e concerto Greenhope la sera. Raggiungibile in meno di due ore da Milano e Lugano.',c1:{l:'Scopri il weekend',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
+  relax_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:[['Wellness','kw-green'],['SPA','kw-teal'],['Natura','kw-green']],text:'Due giorni tra esperienza Innerwalk, concerto Greenhope il sabato e Sono Natura nei boschi la domenica.',c1:{l:'Scopri il weekend',h:'#'},c2:{l:'Prenota Innerwalk',h:'#'}},
+  relax_solo_giorno:{title:'Natura, musica e rigenerazione',date:'Sabato 25 luglio',kws:[['Silenzio','kw-green'],['Wellness','kw-teal'],['Natura','kw-green']],text:'Esperienza Innerwalk al passo, spa al Brocco nel pomeriggio. La montagna come spazio di ritiro.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  relax_solo_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:[['Silenzio','kw-green'],['Wellness','kw-teal'],['Natura','kw-green']],text:'Due giorni per staccare davvero. Esperienza Innerwalk, Sono Natura nei boschi. Senza programma fisso, senza fretta.',c1:{l:'Scopri il weekend',h:'#'},c2:null},
+  relax_amici_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:[['Musica','kw-violet'],['Natura','kw-green'],['Wellness','kw-teal']],text:'Greenhope Hike Parade, Sono Natura nei boschi, concerto la sera. Due giorni per muoversi e poi fermarsi.',c1:{l:'Scopri il weekend',h:'#'},c2:null},
+  active_famiglia_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:[['Sport','kw-orange'],['Creatività','kw-violet'],['Food','kw-teal']],text:'Atelier per i bambini, Vertical SanBe da vivere da spettatori e Alpine Gourmet. Due giorni in cui non manca niente.',c1:{l:'Scopri il weekend',h:'#'},c2:null},
+  active_famiglia_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:[['Sport','kw-orange'],['Famiglia','kw-green'],['Food','kw-teal']],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  active_coppia_weekend:{title:'Natura, musica e rigenerazione',date:'25–26 luglio',kws:[['Natura','kw-green'],['Musica','kw-violet'],['Movimento','kw-orange']],text:'Greenhope Hike Parade, Sono Natura nei boschi e concerto la sera. Un weekend vero in quota.',c1:{l:'Scopri il weekend',h:'#'},c2:null},
+  active_amici_weekend:{title:'Arte, sfida e sapori',date:'7–8 agosto',kws:[['Sport','kw-orange'],['Outdoor','kw-green'],['Food','kw-teal']],text:'Vertical SanBe, Alpine Gourmet e le escursioni sul territorio. Fatica e piacere, in quota.',c1:{l:'Scopri il weekend',h:'#'},c2:null},
+  active_solo_giorno:{title:'Arte, sfida e sapori',date:'Sabato 8 agosto',kws:[['Sport','kw-orange'],['Outdoor','kw-green'],['Food','kw-teal']],text:'Il Vertical SanBe al mattino e Alpine Gourmet nel resto della giornata.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  creativita_famiglia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:[['Creatività','kw-violet'],['Famiglia','kw-green'],['Arte','kw-teal']],text:'Laboratorio di cianotipia per i bambini al mattino, passeggiata botanica per i genitori al pomeriggio. La sera si confrontano le opere.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  creativita_coppia_giorno:{title:'Stessa tecnica, occhi diversi',date:'Martedì 4 agosto',kws:[['Creatività','kw-violet'],['Arte','kw-teal'],['Natura','kw-green']],text:'Passeggiata botanica tra i boschi e laboratorio di cianotipia. Tornate a casa con qualcosa di unico.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  creativita_solo_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:[['Creatività','kw-violet'],['Stelle','kw-blue'],['Musica','kw-violet']],text:'Workshop Kokedama, Notte delle Stelle e concerto al tramonto a Capanna Confin.',c1:{l:'Scopri il weekend',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
+  coppia_famiglia_giorno:{title:'Festa Nazionale in quota',date:'1 agosto',kws:[['Famiglia','kw-green'],['Musica live','kw-violet'],['Svizzera','kw-blue']],text:'Il 1° agosto in montagna, come si deve. Un villaggio in festa e Davide Van De Sfroos sul palco della Raiffeisen Alpine Lounge.',c1:{l:'Scopri la giornata',h:'#'},c2:null},
+  coppia_coppia_weekend:{title:'Ferragosto alpino',date:'13–14–15 agosto',kws:[['Stelle','kw-blue'],['Musica','kw-violet'],['Relax','kw-green']],text:'Notte delle Stelle, concerto al tramonto, SPA il mattino del 15. Tre giorni che diventano un ricordo.',c1:{l:'Scopri il weekend',h:'#'},c2:{l:'Acquista il pass cabinovia',h:'#'}},
 };
 
 function getKey(){
@@ -205,7 +475,7 @@ function showResult(){
   document.getElementById('r-title').textContent=r.title;
   document.getElementById('r-date').textContent=r.date;
   document.getElementById('r-text').textContent=r.text;
-  document.getElementById('r-kws').innerHTML=r.kws.map(k=>`<span class="result-kw">${k}</span>`).join('');
+  document.getElementById('r-kws').innerHTML=r.kws.map(([k,c])=>`<span class="result-kw ${c}">${k}</span>`).join('');
   let h=`<a class="result-cta-p" href="${r.c1.h}">${r.c1.l}</a>`;
   if(r.c2) h+=`<a class="result-cta-s" href="${r.c2.h}">${r.c2.l}</a>`;
   document.getElementById('r-ctas').innerHTML=h;
